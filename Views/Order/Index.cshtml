@@ -1,0 +1,150 @@
+﻿@{
+    ViewData["Title"] = "Order Page";
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+<script language="javascript" type="text/javascript" src="~/js/Script/Order/Order.js"></script>
+
+<!-- begin :: Content Header -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-header">
+                <h1 class="text-warning mt-4" style="text-align:center">Food Menu</h1>
+            </div>
+            <!-- begin :: Datatable -->
+            <div class="bs-component">
+                <div class="col-sm-12">
+                    <table class="table table-striped table-bordered dataTable" id="tblOrder" style="width:100%">
+                        <thead>
+                            <tr role="row">
+                                <th class="sorting_asc" rowspan="1" colspan="1" style="color: #ffffff;"><b>Name</b></th>
+                                <th class="sorting_asc" rowspan="1" colspan="1" style="color: #ffffff;"><b>Description</b></th>
+                                <th class="sorting_asc" rowspan="1" colspan="1" style="color: #ffffff;"><b>Price</b></th>
+                                <th class="sorting_asc" rowspan="1" colspan="1" style="color: #ffffff;"><b></b></th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyTask"></tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- end :: Datatable -->
+            <div class="row justify-content-md-center mt-4">
+                <div class="col-11"></div>
+                <div class="col-1">
+                    <button type="button" class="btn btn-info" onclick="Ordered()" id="listOrder"> List </button>
+                </div>
+            </div>
+
+            <!-- begin :: Modal -->
+            <div class="modal fade" id="detailsorder">
+                <div class="modal-dialog" style="position: absolute; float: left; left:50%; top: 50%;transform: translate(-50%, -50%);">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Detail</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <p id="txtDescFood" name="txtDescFood"></p>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col">
+                                    <label>Add Quantity</label>
+                                </div>
+                                <div class="col">
+                                    <input type="hidden" id="txtFoodId" />
+                                    <input id="txtQty" type="number" min="0" step="1" name="txtQty" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" onclick="btnSaveModalDetail()">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end :: Modal -->
+            <!-- begin :: Modal -->
+            <div class="modal fade" id="detailsOrdered">
+                <div class="modal-dialog" style="position: absolute; float: left; left:40%; top: 50%;transform: translate(-50%, -50%);">
+                    <div class="modal-content" style="width:900px;">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Detail</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-sm-12">
+                                <table class="table table-striped table-bordered dataTable" id="tblOrdered" style="width:100%">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc" rowspan="1" colspan="1" style="color: #ffffff;"><b>Name</b></th>
+                                            <th class="sorting_asc" rowspan="1" colspan="1" style="color: #ffffff;"><b>Description</b></th>
+                                            <th class="sorting_asc" rowspan="1" colspan="1" style="color: #ffffff;"><b>Price</b></th>
+                                            <th class="sorting_asc" rowspan="1" colspan="1" style="color: #ffffff;"><b>Qty Order</b></th>
+                                            <th class="sorting_asc" rowspan="1" colspan="1" style="color: #ffffff;"><b>Amount</b></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bodyTask"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <div class="row">
+                                <div class="col-8">
+                                    <button type="button" class="btn btn-dark" disabled>Total Amount :<span id="txtTotalAmount"></span></button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-primary" onclick="btnSaveModalDetailOrdered()">Payment</button>
+                                </div>
+                            </div>              
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end :: Modal -->
+            <!-- begin :: Modal Payment-->
+            <div class="modal fade" id="detailsPayment">
+                <div class="modal-dialog" style="position: absolute; float: left; left:50%; top: 50%;transform: translate(-50%, -50%);">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Payment Summary</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row mt-2">
+                                <div class="col">
+                                    <label>Payment : </label>
+                                </div>
+                                <div class="col">
+                                    <label id="txtTotalPayment"></label>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col">
+                                    <label>Input Payment</label>
+                                </div>
+                                <div class="col">
+                                    <input id="txtTotalPaymentEntered" type="text" name="txtTotalPaymentEntered" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" onclick="btnSavePayment()" id="savePayment">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end :: Modal Payment-->           
+        </div>
+    </div>
+</div>
+<!-- end :: Content Header -->
